@@ -27,6 +27,18 @@ mkdir my_project
 cd my_project
 git init
 ```
+
+## mermaid-cxema
+
+```mermaid
+graph LR;
+  untracked -- "git add" --> staged;
+  staget    -- "???"     --> tracked/comitted;
+
+%% стрелка без текста для примера:
+  A --> B;
+```
+
 ## Смайл
 
 :white_check_mark: - один из множества.
@@ -59,3 +71,34 @@ ___
 
 + В числе прочих файлов в папке `.git` есть служебный файл `HEAD`. Он указывает на самый свежий коммит.
 + Вместо хеша последнего коммита можно написать слово `HEAD` - Git вас поймёт.
+
+___
+___
+
+# Статусы файлов в Git
+
++  `untracked` (англ.<<неотслеживаемый>>)
++  `staged` (англ.<<подготовленный>>)
++  `tracked` (англ.<<отслеживаемый>>)
++  `modified` (фнгл.<<изменённый>>)
+
+:heavy_exclamation_mark: Для файлов в состояниях `staged` и `modified` обычно не указывают, что они также `tracked`, потому что это состояние подразумевается.
+
+```mermaid
+graph LR;
+untracked -- "git add" --> staged;
+modified -- "git add" --> staged;
+staged --> modified;
+staged -- "git commit" --> tracked;
+tracked -- "Изменения" --> modified;
+```
+
+1. Файл только что создали. Git ещё не отслеживает содержимое этого файла. Состояние: `untracked`.
+2. Файл добавили в strging area с помощью `git add`. Состояние: `staged` (+ `tracked`).
+    + Возможно, изменили файл ещё раз. Состояние: `staged`, `modified` (+ `tracked`).Обратите внимание: `staged` и `modified` у одного файла, но у разных его версий.
+    + Ещё раз выполнили `git add`. Состояние: `staged` (+ `traced`).
+3. Сделали коммит с помощью `git commit`. Состояние: `tracked`.
+4. Изменили файл. Состояние: `modified` (+ `tracked`).
+5. Снова добавили в staging area с помощью `git add`. Состояние: `staged` (+ `tracked`).
+6. Сделали коммит. Состояние: `tracked`.
+7. Повторили пункты 4 - 7 много-много раз.
